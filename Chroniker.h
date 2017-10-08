@@ -11,7 +11,7 @@ See main program file for more extensive comments and dependencies
 
 // Set the hardware choices
 #define USE_LDR_SENSOR    1   // Use an LDR sensor for auto brightness adjustment
-#define HW_USE_IR         0   // Use the Infrared remote control
+#define HW_USE_IR         1   // Use the Infrared remote control
 #define HW_USE_BLUETOOTH  1   // Use a Bluetooth interface - need to define type below
 // Define the type of BT hardware being used.
 // Only one of these options is enabled at any time.
@@ -20,6 +20,10 @@ See main program file for more extensive comments and dependencies
 #define HW_USE_HC06  1
 #define HW_USE_HM10_HMSOFT 0
 #define HW_USE_HM10_OTHER	 0
+
+#if DEBUG
+#include <MemoryFree.h>
+#endif
 
 // Miscellaneous --------
 #define	ARRAY_SIZE(x)	(sizeof(x)/sizeof(x[0]))

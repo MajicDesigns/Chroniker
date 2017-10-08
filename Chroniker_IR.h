@@ -8,8 +8,8 @@
 Infrared Remote class
 
 The IR Remote class implements the IR interface for Chroniker
-An IR keypress needs to be interpreted based on the current run mode state of the
-FSM and the type of keypress.
+An IR keypress will be translated into commands based on a the static 
+translation table found in this class.
 */
 
 class IRemote: public iChroniker

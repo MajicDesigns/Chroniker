@@ -1,22 +1,26 @@
 /*
-Chroniker clock
-
+Chroniker - A LED Neopixel Clock
 by Marco Colli 
-version 1.0 March 2016
+version 1.0 October 2017
 
 Chroniker is a LED neopixel ring clock. It uses a Maxim DS3231M RTC
-and a 60 pixel NeoPixel ring controlled by the FastLED libray.
+and a 60 pixel NeoPixel ring controlled by the FastLED libray. It 
+can be controlled using a tact switch, Infrared remote or Bluetooth 
+interface.
 
 Usage
 -----
-Brightness setting not curently enabled.
-
-To set time, double press the setting button.
+Using the *tact switch* to set time, double press the switch.
  - Press the button to increase the hour.
  - Long press the button to move to editing minute.
  - Press the button to increase the minutes.
  - Long press the button to end editing.
 The seconds will be reset to zero and normal clock will start again.
+
+The *Bluetooth interface* is self explanatory from the Android application.
+
+The *Infrared remote* interface maps infrared codes from the IR remote 
+interface using the mapping table found in the IR code module.
 
 Library Dependencies:
 --------------------
@@ -24,16 +28,18 @@ Library Dependencies:
 Note: Refer to this FastLED wiki article for future interfaces that may be
 interrupt driven https://github.com/FastLED/FastLED/wiki/Interrupt-problems
 -> FastLED.show() should be called as little as possible - it turns off
-interrupts when it runs and disables other functions!
+interrupts when it runs and disables other functions (like IRReadOnlyRemote)!
 
 * AltSoftSerial https://www.pjrc.com/teensy/td_libs_AltSoftSerial.html
 Note: This library can be used as an alternative to SoftwareSerial based on the
-defined value USE_ALTSOFTSERIAL in Lighthouse_BT.h
+defined value USE_ALTSOFTSERIAL in Chroniker_BT.h
+
+* MemoryFree       https://github.com/McNeight/MemoryFree 
+Note: Only required when debugging flag is turn on.
 
 * IRReadOnlyRemote https://github.com/otryti/IRReadOnlyRemote
-
-* MD_KeySwitch  http://github.com/MajicDesigns/MD_KeySwitch
-* MD_CircQueue  http://github.com/MajicDesigns/MD_CirQueue
+* MD_KeySwitch     http://github.com/MajicDesigns/MD_KeySwitch
+* MD_CircQueue     http://github.com/MajicDesigns/MD_CirQueue
 */
 
 #include <FastLED.h>
@@ -199,7 +205,6 @@ void showClock(bool bOnH = true, bool bOnM = true, bool bOnS = true)
 void cbClock(void)
 // Only execute callback when we are in simple display mode
 {
-  digitalWrite(13, !digitalRead(13));
   RTC.readTime();
   showClock();
 }
@@ -511,7 +516,7 @@ void getCommand(void)
   }
 #endif
 #if HW_USE_IR
-  if (IR.getCommand())    // Bluetooth interface
+  if (IR.getCommand())    // Infrared interface
   {
     PRINTCMD("\n+Q IR ", IR.c);
     ENQUEUE(IR.c);
@@ -569,8 +574,8 @@ void setup(void)
       ; // wait for switch release
     delay(100); // avoid switch bounce
   } 
-  pinMode(13, OUTPUT);
-  digitalWrite(13, HIGH);
+
+  PRINT("\nSetup exit, free mem ", freeMemory());
 }
 
 void loop (void) 

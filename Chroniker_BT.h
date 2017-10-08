@@ -42,7 +42,8 @@ BT_COMMS_TIMEOUT milliseconds and the requester should expect a response with th
 timeout BT_COMMS_TIMEOUT period.
 
 The Bluetooth device is initialised in the begin() method. The hardware MUST NOT BE CONNECTED
-to a master or the initialisation parameters will be passed through the serial interface.
+to a master (eg, BT application) or the initialisation parameters will be passed through the 
+serial interface rather than setting up the BT device.
 */
 
 // Serial protocol parameters

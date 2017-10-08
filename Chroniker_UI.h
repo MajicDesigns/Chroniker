@@ -5,7 +5,7 @@
 #include "Chroniker.h"
 
 /*
-User Interface class
+Tact switch User Interface class
 
 The User Interface Class implements the switch based interface for Chroniker
 A keypress needs to be interpreted based on the current run mode state of the
